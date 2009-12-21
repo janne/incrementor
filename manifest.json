@@ -1,0 +1,14 @@
+{
+  "name": "Incrementor",
+  "version": "1.0.1",
+  "description": "Increment last integer of URL",
+  "icons": {"128": "plus.png"},
+  "browser_action": {
+    "default_icon": "plus.png",
+    "default_title": "Increment last integer of URL"
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "background_page": "background.html"
+}
