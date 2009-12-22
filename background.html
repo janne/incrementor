@@ -1,23 +1,40 @@
 <html>
   <script>
-    chrome.browserAction.onClicked.addListener(function(tab) {
+    function regexp() {
+      return /\d+(?!.*\d+)/;
+    }
 
-      // Catch last number
-      var regexp = /\d+(?!.*\d+)/;
-      var step = 1;
-      var number = tab.url.match(regexp).toString();
-
-      if (number != null) {
-        var replace = (parseInt(number,10) + step).toString();
-
-        // Handle zero padding
-        if (number.match(/^0+/)) {
-          var zeroes = number.match(/^0+/).toString().length + (parseInt(number,10).toString()).length - replace.length;
-          for (var i=0; i<zeroes; i++) replace = "0" + replace;
-        }
-
-        chrome.tabs.update(tab.id, {url: tab.url.replace(regexp, replace)});
+    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
+      if (changeInfo.url) {
+        if (changeInfo.url.match(regexp()))
+          chrome.pageAction.show(tabId);
+        else
+          chrome.pageAction.hide(tabId);
       }
+    });
+
+    chrome.tabs.onSelectionChanged.addListener(function(tabId) {
+      chrome.tabs.get(tabId, function(tab) {
+        if (tab.url.match(regexp()))
+          chrome.pageAction.show(tabId);
+        else
+          chrome.pageAction.hide(tabId);
+      });
+    });
+
+    chrome.pageAction.onClicked.addListener(function(tab) {
+      // Catch last number
+      var step = 1;
+      var number = tab.url.match(regexp()).toString();
+      var replace = (parseInt(number,10) + step).toString();
+
+      // Handle zero padding
+      if (number.match(/^0+/)) {
+        var zeroes = number.match(/^0+/).toString().length + (parseInt(number,10).toString()).length - replace.length;
+        for (var i=0; i<zeroes; i++) replace = "0" + replace;
+      }
+
+      chrome.tabs.update(tab.id, {url: tab.url.replace(regexp(), replace)});
     })
   </script>
 </html>
