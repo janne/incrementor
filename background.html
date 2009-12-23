@@ -4,9 +4,40 @@
       return localStorage["regexp"] ? (new RegExp(localStorage["regexp"])) : /\d+(?!.*\d+)/;
     }
 
-    function step() {
-      return localStorage["step"] ? parseInt(localStorage["step"]) : 1;
+    function step(invert) {
+      var value = localStorage["step"] ? parseInt(localStorage["step"]) : 1;
+      if (invert)
+        value = -value;
+      return value;
     }
+
+    function incrementTab(tab, invert) {
+      // Catch last number
+      var number = tab.url.match(regexp()).toString();
+      var replace = (parseInt(number,10) + step(invert)).toString();
+
+      // Handle zero padding
+      if (number.match(/^0+/)) {
+        var zeroes = number.match(/^0+/).toString().length + (parseInt(number,10).toString()).length - replace.length;
+        for (var i=0; i<zeroes; i++) replace = "0" + replace;
+      }
+
+      chrome.tabs.update(tab.id, {url: tab.url.replace(regexp(), replace)});
+    }
+
+    chrome.extension.onRequest.addListener(function(request, sender, response) {
+      // Left
+      if (request.code == 37) {
+        if (sender.tab.url.match(regexp()))
+          incrementTab(sender.tab, true);
+      }
+
+      // Right
+      if (request.code == 39) {
+        if (sender.tab.url.match(regexp()))
+          incrementTab(sender.tab);
+      }
+    });
 
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
       if (changeInfo.url) {
@@ -27,17 +58,7 @@
     });
 
     chrome.pageAction.onClicked.addListener(function(tab) {
-      // Catch last number
-      var number = tab.url.match(regexp()).toString();
-      var replace = (parseInt(number,10) + step()).toString();
-
-      // Handle zero padding
-      if (number.match(/^0+/)) {
-        var zeroes = number.match(/^0+/).toString().length + (parseInt(number,10).toString()).length - replace.length;
-        for (var i=0; i<zeroes; i++) replace = "0" + replace;
-      }
-
-      chrome.tabs.update(tab.id, {url: tab.url.replace(regexp(), replace)});
+      incrementTab(tab);
     })
   </script>
 </html>
