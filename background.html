@@ -1,7 +1,11 @@
 <html>
-  <script>
+  <script type="text/javascript">
     function regexp() {
-      return /\d+(?!.*\d+)/;
+      return localStorage["regexp"] ? (new RegExp(localStorage["regexp"])) : /\d+(?!.*\d+)/;
+    }
+
+    function step() {
+      return localStorage["step"] ? parseInt(localStorage["step"]) : 1;
     }
 
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
@@ -24,9 +28,8 @@
 
     chrome.pageAction.onClicked.addListener(function(tab) {
       // Catch last number
-      var step = 1;
       var number = tab.url.match(regexp()).toString();
-      var replace = (parseInt(number,10) + step).toString();
+      var replace = (parseInt(number,10) + step()).toString();
 
       // Handle zero padding
       if (number.match(/^0+/)) {

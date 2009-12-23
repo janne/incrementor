@@ -1,8 +1,9 @@
 {
   "name": "Incrementor",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Increment last number in URL",
   "icons": {"128": "plus.png"},
+  "options_page": "options.html",
   "page_action": {
     "default_icon": "plus.png",
     "default_title": "Increment last number in URL"

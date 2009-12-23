@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>Incrementor Options</title>
+    <meta http-equiv='Content-type' content='text/html; charset=utf-8' />
+    <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+    <script type="text/javascript">
+
+      function regexp_default() {
+        return "\\d+(?!.*\\d+)";
+      }
+
+      function step_default() {
+        return 1;
+      }
+
+      // Saves options to localStorage.
+      function save_options() {
+        var regexp = document.getElementById("regexp").value;
+        localStorage["regexp"] = regexp;
+        var step = document.getElementById("step").value;
+        localStorage["step"] = step;
+      }
+
+      // Restores select box state to saved value from localStorage.
+      function restore_options() {
+        var regexp = localStorage["regexp"] || regexp_default();
+        document.getElementById("regexp").value = regexp;
+        var step = localStorage["step"] || step_default();
+        document.getElementById("step").value = step;
+      }
+
+      function restore_defaults() {
+        localStorage["regexp"] = regexp_default();
+        localStorage["step"] = step_default();
+        restore_options();
+      }
+    </script>
+  </head>
+
+  <body onload="restore_options()">
+    <form>
+      <p>
+        <label for="regexp">Regexp</label>
+        <input type="text" id="regexp"></input>
+      </p>
+      <p>
+        <label for="step">Step</label>
+        <input type="text" id="step"></input>
+      </p>
+      <p>
+        <input type="submit" value="Save" onclick="save_options()"></input>
+        <input type="submit" value="Reset" onclick="restore_defaults()"></input>
+      </p>
+    </form>
+    <div id="status"></div>
+  </body>
+</html>
