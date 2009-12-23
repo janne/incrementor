@@ -12,13 +12,13 @@
     }
 
     function incrementTab(tab, invert) {
-      // Catch last number
       var number = tab.url.match(regexp()).toString();
-      var replace = (parseInt(number,10) + step(invert)).toString();
+      var int_number = parseInt(number,10);
+      var replace = (int_number + step(invert)).toString();
 
       // Handle zero padding
-      if (number.match(/^0+/)) {
-        var zeroes = number.match(/^0+/).toString().length + (parseInt(number,10).toString()).length - replace.length;
+      if (number.match(/^0+/) && int_number > 0) {
+        var zeroes = number.match(/^0+/).toString().length + (int_number.toString()).length - replace.length;
         for (var i=0; i<zeroes; i++) replace = "0" + replace;
       }
 
