@@ -26,17 +26,13 @@
     }
 
     chrome.extension.onRequest.addListener(function(request, sender, response) {
-      // Left
-      if (request.code == 37) {
-        if (sender.tab.url.match(regexp()))
+        // Left
+        if (request.alt && request.code == 37 && sender.tab.url.match(regexp()))
           incrementTab(sender.tab, true);
-      }
 
-      // Right
-      if (request.code == 39) {
-        if (sender.tab.url.match(regexp()))
+        // Right
+        if (request.alt && request.code == 39 && sender.tab.url.match(regexp()))
           incrementTab(sender.tab);
-      }
     });
 
     chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
