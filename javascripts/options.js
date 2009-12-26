@@ -1,21 +1,20 @@
+$(document).ready(function() {
+  chrome.extension.sendRequest("regexp", function(response) {
+    $("#regexp").val(response);
+  });
+  chrome.extension.sendRequest("step", function(response) {
+    $("#step").val(response);
+  });
+});
+
 // Saves options to localStorage.
 function save_options() {
-  var regexp = document.getElementById("regexp").value;
+  var regexp = $("#regexp").val();
   localStorage["regexp"] = regexp;
-  var step = document.getElementById("step").value;
+  var step = $("#step").val();
   localStorage["step"] = step;
 }
 
-// Restores select box state to saved value from localStorage.
-function restore_options() {
-  var regexp = localStorage["regexp"] || regexp_default;
-  document.getElementById("regexp").value = regexp;
-  var step = localStorage["step"] || step_default;
-  document.getElementById("step").value = step;
-}
-
 function restore_defaults() {
-  localStorage["regexp"] = regexp_default;
-  localStorage["step"] = step_default;
-  restore_options();
+  chrome.extension.sendRequest("restore");
 }

@@ -1,13 +1,17 @@
 function regexp_string() {
-  return localStorage["regexp"] || regexp_default;
+  return localStorage["regexp"] || "\\d+(?!.*\\d+)";
 }
 
 function regexp() {
   return new RegExp(regexp_string());
 }
 
+function step_string() {
+  return localStorage["step"] || "1";
+}
+
 function step(invert) {
-  var value = localStorage["step"] ? parseInt(localStorage["step"]) : step_default;
+  var value = parseInt(step_string());
   if (invert)
     value = -value;
   return value;
@@ -32,9 +36,14 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     incrementTab(sender.tab);
   else if (request == "decrement" && sender.tab.url.match(regexp()))
     incrementTab(sender.tab, true);
-  else if (request == 'regexp')
+  else if (request == "regexp")
     sendResponse(regexp_string());
-  else if (request == 'show')
+  else if (request == "step")
+    sendResponse(step_string());
+  else if (request == "restore") {
+   delete localStorage["regexp"];
+   delete localStorage["step"];
+  } else if (request == "show")
     chrome.pageAction.show(sender.tab.id);
 });
 
