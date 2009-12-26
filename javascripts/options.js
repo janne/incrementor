@@ -8,14 +8,14 @@ function save_options() {
 
 // Restores select box state to saved value from localStorage.
 function restore_options() {
-  var regexp = localStorage["regexp"] || regexp_default();
+  var regexp = localStorage["regexp"] || regexp_default;
   document.getElementById("regexp").value = regexp;
-  var step = localStorage["step"] || step_default();
+  var step = localStorage["step"] || step_default;
   document.getElementById("step").value = step;
 }
 
 function restore_defaults() {
-  localStorage["regexp"] = regexp_default();
-  localStorage["step"] = step_default();
+  localStorage["regexp"] = regexp_default;
+  localStorage["step"] = step_default;
   restore_options();
 }

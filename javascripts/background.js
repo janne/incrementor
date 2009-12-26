@@ -1,9 +1,9 @@
 function regexp() {
-  return new Regexp(localStorage["regexp"] || regexp_default());
+  return (new RegExp(localStorage["regexp"] || regexp_default));
 }
 
 function step(invert) {
-  var value = localStorage["step"] ? parseInt(localStorage["step"]) : step_default();
+  var value = localStorage["step"] ? parseInt(localStorage["step"]) : step_default;
   if (invert)
     value = -value;
   return value;
