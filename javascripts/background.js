@@ -1,5 +1,9 @@
+function regexp_string() {
+  return localStorage["regexp"] || regexp_default;
+}
+
 function regexp() {
-  return (new RegExp(localStorage["regexp"] || regexp_default));
+  return new RegExp(regexp_string());
 }
 
 function step(invert) {
@@ -23,32 +27,15 @@ function incrementTab(tab, invert) {
   chrome.tabs.update(tab.id, {url: tab.url.replace(regexp(), replace)});
 }
 
-chrome.extension.onRequest.addListener(function(request, sender, response) {
-    // Left
-    if (request.alt && request.code == 37 && sender.tab.url.match(regexp()))
-      incrementTab(sender.tab, true);
-
-    // Right
-    if (request.alt && request.code == 39 && sender.tab.url.match(regexp()))
-      incrementTab(sender.tab);
-});
-
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
-  if (changeInfo.url) {
-    if (changeInfo.url.match(regexp()))
-      chrome.pageAction.show(tabId);
-    else
-      chrome.pageAction.hide(tabId);
-  }
-});
-
-chrome.tabs.onSelectionChanged.addListener(function(tabId) {
-  chrome.tabs.get(tabId, function(tab) {
-    if (tab.url.match(regexp()))
-      chrome.pageAction.show(tabId);
-    else
-      chrome.pageAction.hide(tabId);
-  });
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+  if (request == "increment" && sender.tab.url.match(regexp()))
+    incrementTab(sender.tab);
+  else if (request == "decrement" && sender.tab.url.match(regexp()))
+    incrementTab(sender.tab, true);
+  else if (request == 'regexp')
+    sendResponse(regexp_string());
+  else if (request == 'show')
+    chrome.pageAction.show(sender.tab.id);
 });
 
 chrome.pageAction.onClicked.addListener(function(tab) {
