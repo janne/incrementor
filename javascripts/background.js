@@ -40,10 +40,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     sendResponse(regexp_string());
   else if (request == "step")
     sendResponse(step_string());
-  else if (request == "restore") {
-   delete localStorage["regexp"];
-   delete localStorage["step"];
-  } else if (request == "show")
+  else if (request == "show")
     chrome.pageAction.show(sender.tab.id);
 });
 

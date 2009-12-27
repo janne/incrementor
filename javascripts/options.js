@@ -7,7 +7,7 @@ $(document).ready(function() {
   });
 });
 
-// Saves options to localStorage.
+// Saves options to localStorage
 function save_options() {
   var regexp = $("#regexp").val();
   localStorage["regexp"] = regexp;
@@ -15,6 +15,8 @@ function save_options() {
   localStorage["step"] = step;
 }
 
+// Delete options from localStorage
 function restore_defaults() {
-  chrome.extension.sendRequest("restore");
+  delete localStorage["regexp"];
+  delete localStorage["step"];
 }
