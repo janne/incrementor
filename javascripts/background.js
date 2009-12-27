@@ -32,9 +32,9 @@ function incrementTab(tab, invert) {
 }
 
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-  if (request == "increment" && sender.tab.url.match(regexp()))
+  if (request == "increment")
     incrementTab(sender.tab);
-  else if (request == "decrement" && sender.tab.url.match(regexp()))
+  else if (request == "decrement")
     incrementTab(sender.tab, true);
   else if (request == "regexp")
     sendResponse(regexp_string());
