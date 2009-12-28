@@ -2,7 +2,7 @@ jQuery.noConflict();
 
 // Fetch regexp
 chrome.extension.sendRequest("regexp", function(response) {
-  if (window.location.toString().match(new RegExp(response))) {
+  if (String(window.location).match(new RegExp(response))) {
     // Show button if valid url
     chrome.extension.sendRequest("show");
 

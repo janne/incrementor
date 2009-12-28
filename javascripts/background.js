@@ -11,20 +11,20 @@ function step_string() {
 }
 
 function step(invert) {
-  var value = parseInt(step_string());
+  var value = Number(step_string());
   if (invert)
     value = -value;
   return value;
 }
 
 function incrementTab(tab, invert) {
-  var number = tab.url.match(regexp()).toString();
-  var int_number = parseInt(number,10);
-  var replace = (int_number + step(invert)).toString();
+  var number = String(tab.url.match(regexp()));
+  var int_number = Number(number);
+  var replace = String(int_number + step(invert));
 
   // Handle zero padding
   if (number.match(/^0+/) && int_number > 0) {
-    var zeroes = number.match(/^0+/).toString().length + (int_number.toString()).length - replace.length;
+    var zeroes = String(number.match(/^0+/)).length + String(int_number).length - replace.length;
     for (var i=0; i<zeroes; i++) replace = "0" + replace;
   }
 
