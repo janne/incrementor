@@ -1,5 +1,5 @@
 function regexp_string() {
-  return localStorage["regexp"] || "\\d+(?!.*\\d+)";
+  return localStorage.regexp || "\\d+(?!.*\\d+)";
 }
 
 function regexp() {
@@ -7,7 +7,7 @@ function regexp() {
 }
 
 function step_string() {
-  return localStorage["step"] || "1";
+  return localStorage.step || "1";
 }
 
 function step(invert) {
@@ -46,4 +46,4 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 
 chrome.pageAction.onClicked.addListener(function(tab) {
   incrementTab(tab);
-})
+});
